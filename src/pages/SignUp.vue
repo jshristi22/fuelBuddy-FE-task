@@ -28,45 +28,38 @@
       Create Account
     </button>
     <p class="text-white">
-      Already have a account? <a href="/login">Login here</a>
+      Already have a account?
+      <strong @click="redirectToLogin">here</strong>
     </p>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { linkTo } from "@storybook/addon-links";
 
-export default {
-  name: "SignUp",
+const email = ref("");
+const password = ref("");
+const error = ref("");
+const router = useRouter();
 
-  //defining local state
-  data() {
-    return {
-      email: "",
-      password: "",
-      error: "",
-    };
-  },
-  methods: {
-    redirectToLogin() {
-      this.$router.push("/login");
-    },
-    async signup() {
-      try {
-        await createUserWithEmailAndPassword(auth, this.email, this.password);
-        this.redirectToLogin();
-      } catch (error: any) {
-        this.error = error.message;
-      }
-    },
-  },
-};
+function redirectToLogin() {
+  linkTo("Login", "Primary")();
+  router.push("/login");
+}
+async function signup() {
+  try {
+    await createUserWithEmailAndPassword(auth, email.value, password.value);
+    redirectToLogin();
+  } catch (err: any) {
+    error.value = err.message;
+  }
+}
 </script>
 
 <style >
 </style>
 
-function createUserWithEmailAndPassword(auth: any, email: any, password: any) {
-  throw new Error('Function not implemented.');
-}

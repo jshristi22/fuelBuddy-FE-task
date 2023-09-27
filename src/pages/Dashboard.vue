@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import { linkTo } from "@storybook/addon-links";
 import { signOut } from "firebase/auth";
-import { onMounted } from "vue";
+
 import { useRouter } from "vue-router";
 import { auth } from "../firebaseConfig";
 import { useDataStore, UserDataType } from "../store/user_data";
@@ -10,6 +11,7 @@ const store = useDataStore();
 const router = useRouter();
 
 function redirectToLogin() {
+  linkTo("Login", "Primary")();
   router.push("/login");
 }
 async function logout() {
@@ -22,20 +24,6 @@ async function logout() {
   };
   store.setUserCredential(data);
 }
-
-onMounted(() => {
-  auth.onAuthStateChanged((user) => {
-    if (user === null) redirectToLogin();
-    else {
-      const data: UserDataType = {
-        email: user?.email!,
-        userId: user?.uid,
-        name: user?.displayName ?? "User",
-      };
-      store.setUserCredential(data);
-    }
-  });
-});
 </script>
 
 <template>

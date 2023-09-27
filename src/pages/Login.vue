@@ -7,7 +7,7 @@
     <h1 class="font-sans text-5xl font-bold text-white">
       Login to your account
     </h1>
-    <div v-show="error.length !== 0" class="bg-red-600 px-2 py-1 rounded">
+    <div v-show="error?.length !== 0" class="bg-red-600 px-2 py-1 rounded">
       <p class="text-white">{{ error }}</p>
     </div>
     <div class="flex flex-col mx-auto gap-y-2.5">
@@ -28,7 +28,10 @@
     <button class="border px-6 py-1 rounded-sm text-white" @click="login">
       Login
     </button>
-    <p class="text-white">Create an account, <a href="/sign-up">here</a></p>
+    <p class="text-white">
+      Create an account,
+      <strong @click="redirectToSignUp">here</strong>
+    </p>
   </div>
 </template>
 
@@ -39,6 +42,7 @@ import { auth } from "../firebaseConfig";
 
 import { useDataStore, UserDataType } from "../store/user_data";
 import { useRouter } from "vue-router";
+import { linkTo } from "@storybook/addon-links";
 
 const store = useDataStore();
 
@@ -47,7 +51,12 @@ const pwd = ref("");
 const error = ref("");
 const router = useRouter();
 
-function redirect() {
+function redirectToSignUp() {
+  linkTo("SignUp", "Primary")();
+  router.push("/sign-up");
+}
+
+function redirectToDashboard() {
   router.push("/");
 }
 async function login() {
@@ -62,9 +71,9 @@ async function login() {
       name: response.user.displayName ?? "",
       userId: response.user.uid,
     };
-    console.log(data);
     store.setUserCredential(data);
-    redirect();
+    linkTo("Dashboard", "Primary")();
+    redirectToDashboard();
   } catch (err: any) {
     error.value = err.message;
   }

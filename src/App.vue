@@ -1,4 +1,37 @@
 <script setup lang="ts">
+import { auth } from "./firebaseConfig";
+
+import { onMounted } from "vue";
+import { useDataStore, UserDataType } from "./store/user_data";
+
+import { useRouter } from "vue-router";
+import { linkTo } from "@storybook/addon-links";
+
+const router = useRouter();
+
+function redirectToDashboard() {
+  linkTo("Dashboard", "Primary")();
+  router.push("/");
+}
+function redirectToLogin() {
+  linkTo("Login", "Primary")();
+  router.push("/login");
+}
+const store = useDataStore();
+onMounted(() => {
+  auth.onAuthStateChanged((user) => {
+    if (user === null) redirectToLogin();
+    else {
+      const data: UserDataType = {
+        email: user?.email!,
+        userId: user?.uid,
+        name: user?.displayName ?? "User",
+      };
+      store.setUserCredential(data);
+      redirectToDashboard();
+    }
+  });
+});
 </script>
 
 <template>
@@ -7,17 +40,4 @@
   </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+
