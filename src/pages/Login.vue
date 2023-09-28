@@ -2,7 +2,7 @@
 
 <template>
   <div
-    class="h-4/5 w-2/5 mx-auto flex flex-col items-center gap-y-2.5 bg-sky-400 h-4/5 px-5 py-5 rounded-sm justify-around"
+    class="shadow-2xl h-4/5 w-2/5 mx-auto flex flex-col items-center gap-y-2.5 bg-sky-400 h-4/5 px-5 py-5 rounded-xl justify-around"
   >
     <h1 class="font-sans text-5xl font-bold text-white">
       Login to your account
@@ -13,24 +13,27 @@
     <div class="flex flex-col mx-auto gap-y-2.5">
       <input
         type="text"
-        class="px-6 py-1 border rounded-sm"
+        class="px-6 py-1 border rounded-md shadow"
         placeholder="Enter your email"
         name="email"
         v-model="email"
       />
       <input
         type="password"
-        class="px-6 py-1 border rounded-sm"
+        class="px-6 py-1 border rounded-md shadow"
         placeholder="Enter your password"
         v-model="pwd"
       />
     </div>
-    <button class="border px-6 py-1 rounded-sm text-white" @click="login">
+    <button
+      class="shadow-xl border px-6 py-1 rounded text-white"
+      @click="login"
+    >
       Login
     </button>
     <p class="text-white">
       Create an account,
-      <strong @click="redirectToSignUp">here</strong>
+      <strong class="cursor-pointer" @click="redirectToSignUp">here</strong>
     </p>
   </div>
 </template>

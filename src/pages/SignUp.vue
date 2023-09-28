@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-4/5 w-2/5 mx-auto flex flex-col items-center gap-y-2.5 bg-sky-400 h-4/5 px-5 py-5 rounded-sm justify-around"
+    class="shadow-2xl h-4/5 w-2/5 mx-auto flex flex-col items-center gap-y-2.5 bg-sky-400 h-4/5 px-5 py-5 rounded-sm justify-around"
   >
     <h1 class="font-sans text-5xl font-bold text-white">
       Create a new account
@@ -11,25 +11,28 @@
       </div>
       <!-- v-model keeps state data and input field data in sync -->
       <input
-        class="px-6 py-1"
+        class="px-6 py-1 border rounded-md shadow"
         type="text"
         placeholder="Enter your email"
         name="email"
         v-model="email"
       />
       <input
-        class="px-6 py-1"
+        class="px-6 py-1 border rounded-md shadow"
         type="password"
         placeholder="Enter your password"
         v-model="password"
       />
     </div>
-    <button class="border px-6 py-1 rounded-sm text-white" @click="signup">
+    <button
+      class="shadow-xl border px-6 py-1 rounded-sm text-white"
+      @click="signup"
+    >
       Create Account
     </button>
     <p class="text-white">
       Already have a account?
-      <strong @click="redirectToLogin">here</strong>
+      <strong class="cursor-pointer" @click="redirectToLogin">here</strong>
     </p>
   </div>
 </template>
