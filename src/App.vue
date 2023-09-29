@@ -2,7 +2,7 @@
 import { auth } from "./firebaseConfig";
 
 import { onMounted } from "vue";
-import { useDataStore, UserDataType } from "./store/user_data";
+import { useDataStore } from "./store/user_data";
 
 import { useRouter } from "vue-router";
 import { linkTo } from "@storybook/addon-links";
@@ -22,12 +22,11 @@ onMounted(() => {
   auth.onAuthStateChanged((user) => {
     if (user === null) redirectToLogin();
     else {
-      const data: UserDataType = {
+      store.setUserCredential({
         email: user?.email!,
         userId: user?.uid,
         name: user?.displayName ?? "User",
-      };
-      store.setUserCredential(data);
+      });
       redirectToDashboard();
     }
   });

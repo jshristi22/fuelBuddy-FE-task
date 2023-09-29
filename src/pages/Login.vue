@@ -43,7 +43,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref } from "vue";
 import { auth } from "../firebaseConfig";
 
-import { useDataStore, UserDataType } from "../store/user_data";
+import { useDataStore } from "../store/user_data";
 import { useRouter } from "vue-router";
 import { linkTo } from "@storybook/addon-links";
 
@@ -60,6 +60,7 @@ function redirectToSignUp() {
 }
 
 function redirectToDashboard() {
+  linkTo("Dashboard", "Primary")();
   router.push("/");
 }
 async function login() {
@@ -69,13 +70,11 @@ async function login() {
       email.value,
       pwd.value
     );
-    const data: UserDataType = {
+    store.setUserCredential({
       email: response.user.email ?? "",
       name: response.user.displayName ?? "",
       userId: response.user.uid,
-    };
-    store.setUserCredential(data);
-    linkTo("Dashboard", "Primary")();
+    });
     redirectToDashboard();
   } catch (err: any) {
     error.value = err.message;

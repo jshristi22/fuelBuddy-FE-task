@@ -1,31 +1,3 @@
-<script lang="ts" setup>
-import { linkTo } from "@storybook/addon-links";
-import { signOut } from "firebase/auth";
-
-import { useRouter } from "vue-router";
-import { auth } from "../firebaseConfig";
-import { useDataStore, UserDataType } from "../store/user_data";
-
-const store = useDataStore();
-
-const router = useRouter();
-
-function redirectToLogin() {
-  linkTo("Login", "Primary")();
-  router.push("/login");
-}
-async function logout() {
-  await signOut(auth);
-  redirectToLogin();
-  const data: UserDataType = {
-    email: "",
-    userId: "",
-    name: "",
-  };
-  store.setUserCredential(data);
-}
-</script>
-
 <template>
   <div
     class="w-2/5 mx-auto flex flex-col items-center gap-y-2.5 bg-sky-400 h-4/5 px-5 py-5 rounded-xl"
@@ -58,6 +30,33 @@ async function logout() {
     </button>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { linkTo } from "@storybook/addon-links";
+import { signOut } from "firebase/auth";
+
+import { useRouter } from "vue-router";
+import { auth } from "../firebaseConfig";
+import { useDataStore } from "../store/user_data";
+
+const store = useDataStore();
+
+const router = useRouter();
+
+function redirectToLogin() {
+  linkTo("Login", "Primary")();
+  router.push("/login");
+}
+async function logout() {
+  await signOut(auth);
+  store.setUserCredential({
+    email: "",
+    userId: "",
+    name: "",
+  });
+  redirectToLogin();
+}
+</script>
 
 
 <style>
